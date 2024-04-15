@@ -1,0 +1,13 @@
+package com.example.common
+
+import org.slf4j.event.Level
+import org.springframework.http.HttpStatus
+
+enum class ErrorCode(
+    val code: String,
+    val message: String,
+    val httpStatusCode: HttpStatus,
+    val logLevel: Level = Level.WARN
+) {
+    UNKNOWN_SERVER_ERROR("F99999", "알 수 없는 서버 에러입니다", HttpStatus.INTERNAL_SERVER_ERROR)
+}
