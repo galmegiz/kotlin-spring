@@ -27,7 +27,7 @@ class MemoryEmployeeRepository : EmployeesRepository {
 
     }
 
-    override fun getEmployee(empNo: Int): Employee? {
+    override fun findByEmpNo(empNo: Int): Employee? {
         return employeeMap[empNo]
     }
 }

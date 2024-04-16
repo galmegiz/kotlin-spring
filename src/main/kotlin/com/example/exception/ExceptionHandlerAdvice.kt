@@ -15,12 +15,12 @@ class ExceptionHandlerAdvice : Log {
 
     @ExceptionHandler(Exception::class)
     fun unExpectedExceptionHandler(e: Exception): ResponseEntity<CommonApiResponse<Any?>>{
-        log.error("UNEXPECTED_ERROR!! message: {}", e.message)
+        log.error("UNEXPECTED_ERROR!! errorType : {}, message: {}", e::class, e.message)
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
             CommonApiResponse(
                 success = false,
-                errorCode = ErrorCode.UNKNOWN_SERVER_ERROR,
+                errorCode = ErrorCode.UNKNOWN_SERVER_ERROR.code,
                 message = ErrorCode.UNKNOWN_SERVER_ERROR.message
             )
         )
@@ -48,7 +48,7 @@ class ExceptionHandlerAdvice : Log {
         return ResponseEntity.status(HttpStatus.OK).body(
             CommonApiResponse(
                 success = false,
-                errorCode = errorCode,
+                errorCode = errorCode.code,
                 message = errorMessage
             )
         )
