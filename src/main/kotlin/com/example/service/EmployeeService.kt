@@ -14,4 +14,9 @@ class EmployeeService(
         return mybatisEmployeeRepository.findByEmpNo(empNo)
             ?: throw ResourceNotFoundException(ErrorCode.EMPLOYEE_NOT_FOUND, Employee::class)
     }
+
+    fun updateEmployeeFirstName(empNo: Int, firstName: String): Employee {
+        check(mybatisEmployeeRepository.updateEmployee(empNo, firstName = firstName))
+        return findEmployeeByEmpNo(empNo)
+    }
 }

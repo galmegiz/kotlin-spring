@@ -9,7 +9,9 @@ import com.example.repository.MybatisEmployeeRepository
 import com.example.service.EmployeeService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -29,6 +31,15 @@ class EmployeeController(
         return CommonApiResponse(
             success = true,
             data = employee
+        )
+    }
+
+    @GetMapping("/{empNo}/update")
+    fun updateEmployee(@PathVariable empNo: Int, @RequestParam("firstName") firstName: String): CommonApiResponse<Employee> {
+        val updatedEmployee = employeeService.updateEmployeeFirstName(empNo, firstName)
+        return CommonApiResponse(
+            success = true,
+            data = updatedEmployee
         )
     }
 }

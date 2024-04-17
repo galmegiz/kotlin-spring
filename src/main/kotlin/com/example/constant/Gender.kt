@@ -1,5 +1,5 @@
 package com.example.constant
 
-enum class Gender {
-    MALE, FEMALE
+enum class Gender(keyword: String) {
+    M("MALE"), F("FEMALE")
 }

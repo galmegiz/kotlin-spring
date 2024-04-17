@@ -30,4 +30,15 @@ class MemoryEmployeeRepository : EmployeesRepository {
     override fun findByEmpNo(empNo: Int): Employee? {
         return employeeMap[empNo]
     }
+
+    override fun updateEmployee(
+        empNo: Int,
+        birthDate: LocalDate?,
+        firstName: String?,
+        lastName: String?,
+        gender: Gender?,
+        hireDate: LocalDate?
+    ): Boolean {
+        TODO("Not yet implemented")
+    }
 }
