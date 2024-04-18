@@ -1,5 +1,6 @@
 package com.example.repository
 
+import com.example.common.PageRequest
 import com.example.constant.Gender
 import com.example.domain.Employee
 import com.example.repository.table.EMPLOYEE_TABLE
@@ -11,8 +12,15 @@ import java.time.LocalDate
 
 @Mapper
 interface EmployeeMapper {
+    @Select("SELECT count(*) FROM $EMPLOYEE_TABLE")
+    fun getEmployeeCount(): Int
     @Select("SELECT * FROM $EMPLOYEE_TABLE WHERE emp_no = #{empNo}")
     fun findByEmpNo(empNo: Int): Employee?
+    @Select("SELECT * FROM $EMPLOYEE_TABLE " +
+            "WHERE hire_date BETWEEN #{startDate} AND #{endDate} " +
+            "ORDER BY hire_date ASC " +
+            "LIMIT #{pageRequest.pageNumber}, #{pageRequest.pageSize}")
+    fun findBetweenStartDateAndEndDateOrderByASC(startDate: LocalDate, endDate: LocalDate, pageRequest: PageRequest): List<Employee>
     @UpdateProvider(type = EmployeeSqlBuilder::class, method = "buildUpdateEmployee")
     fun updateEmployee(
         empNo: Int,

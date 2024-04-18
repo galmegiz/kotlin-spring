@@ -1,5 +1,8 @@
 package com.example.repository
 
+import com.example.common.Page
+import com.example.common.PageRequest
+import com.example.common.PageResponse
 import com.example.constant.Gender
 import com.example.domain.Employee
 import jakarta.annotation.PostConstruct
@@ -39,6 +42,14 @@ class MemoryEmployeeRepository : EmployeesRepository {
         gender: Gender?,
         hireDate: LocalDate?
     ): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun findEmployeeBetweenStartDateAndEndDate(
+        startDate: LocalDate,
+        endDate: LocalDate,
+        pageRequest: PageRequest
+    ): Page<Employee> {
         TODO("Not yet implemented")
     }
 }

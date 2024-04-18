@@ -1,5 +1,8 @@
 package com.example.repository
 
+import com.example.common.Page
+import com.example.common.PageRequest
+import com.example.common.PageResponse
 import com.example.constant.Gender
 import com.example.domain.Employee
 import org.apache.ibatis.annotations.Mapper
@@ -18,7 +21,6 @@ class MybatisEmployeeRepository(
         return employeeMapper.findByEmpNo(empNo)
     }
 
-    @UpdateProvider(type = JavaEmployeeSqlBuilder::class, method = "buildUpdateEmployee")
     override fun updateEmployee(
         empNo: Int,
         birthDate: LocalDate?,
@@ -28,5 +30,19 @@ class MybatisEmployeeRepository(
         hireDate: LocalDate?
     ): Boolean {
         return employeeMapper.updateEmployee(empNo, birthDate, firstName, lastName, gender, hireDate)
+    }
+
+    override fun findEmployeeBetweenStartDateAndEndDate(
+        startDate: LocalDate,
+        endDate: LocalDate,
+        pageRequest: PageRequest
+    ): Page<Employee> {
+        val count = employeeMapper.getEmployeeCount()
+        val employees: List<Employee> = employeeMapper.findBetweenStartDateAndEndDateOrderByASC(startDate, endDate, pageRequest)
+        return Page(
+            content = employees,
+            pageRequest = pageRequest,
+            totalElements = count
+        )
     }
 }
