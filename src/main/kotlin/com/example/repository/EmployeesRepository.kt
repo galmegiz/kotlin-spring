@@ -19,4 +19,14 @@ interface EmployeesRepository {
     ): Boolean
 
     fun findEmployeeBetweenStartDateAndEndDate(startDate: LocalDate, endDate: LocalDate, pageRequest: PageRequest): Page<Employee>
+    fun deleteEmployee(empNo: Int): Boolean
+    fun saveDeletedEmployee(
+        empNo: Int,
+        birthDate: LocalDate,
+        firstName: String,
+        lastName: String,
+        gender: Gender,
+        hireDate: LocalDate,
+        deletedDate: LocalDate
+    ): Boolean
 }

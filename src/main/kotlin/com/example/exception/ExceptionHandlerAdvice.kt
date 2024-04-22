@@ -26,6 +26,19 @@ class ExceptionHandlerAdvice : Log {
         )
     }
 
+    @ExceptionHandler(IllegalStateException::class)
+    fun checkException(e: Exception): ResponseEntity<CommonApiResponse<Any?>>{
+        log.error("IllegalStateException!! message: {}", e.message)
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            CommonApiResponse(
+                success = false,
+                errorCode = ErrorCode.UNKNOWN_SERVER_ERROR.code,
+                message = ErrorCode.UNKNOWN_SERVER_ERROR.message
+            )
+        )
+    }
+
     @ExceptionHandler(BaseServiceException::class)
     fun baseExceptionHandler(e: BaseServiceException, request: HttpServletRequest): ResponseEntity<CommonApiResponse<Any?>>{
         val errorMessage = e.message.orEmpty()

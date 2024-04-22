@@ -52,4 +52,20 @@ class MemoryEmployeeRepository : EmployeesRepository {
     ): Page<Employee> {
         TODO("Not yet implemented")
     }
+
+    override fun deleteEmployee(empNo: Int): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun saveDeletedEmployee(
+        empNo: Int,
+        birthDate: LocalDate,
+        firstName: String,
+        lastName: String,
+        gender: Gender,
+        hireDate: LocalDate,
+        deletedDate: LocalDate
+    ): Boolean {
+        TODO("Not yet implemented")
+    }
 }

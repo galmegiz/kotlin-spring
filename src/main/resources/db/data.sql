@@ -1,12 +1,3 @@
-CREATE TABLE employees(
-    emp_no INTEGER PRIMARY KEY,
-    birth_date DATE,
-    first_name VARCHAR(14),
-    last_name VARCHAR(16),
-    gender ENUM('M', 'F'),
-    hire_date DATE
-);
-
 INSERT INTO `employees` VALUES (10001,'1953-09-02','Georgi','Facello','M','1986-06-26'),
 (10002,'1964-06-02','Bezalel','Simmel','F','1985-11-21'),
 (10003,'1959-12-03','Parto','Bamford','M','1986-08-28'),
