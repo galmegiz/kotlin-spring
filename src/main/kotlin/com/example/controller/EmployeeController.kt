@@ -5,6 +5,7 @@ import com.example.common.ErrorCode
 import com.example.common.PageRequest
 import com.example.common.PageResponse
 import com.example.domain.Employee
+import com.example.dto.EmployeeInsertRequest
 import com.example.dto.EmployeeUpdateRequest
 import com.example.exception.ResourceNotFoundException
 import com.example.repository.EmployeesRepository
@@ -49,6 +50,14 @@ class EmployeeController(
                      @RequestParam("size") size: Int = 100): PageResponse<Employee> {
         val pageRequest = PageRequest.of(pageNumber, size)
         return employeeService.findEmployeeByPeriod(startDate, endDate, pageRequest)
+    }
+
+    @GetMapping("/insert")
+    fun insertEmployee(@ModelAttribute insertRequest: EmployeeInsertRequest): CommonApiResponse<Employee> {
+        return CommonApiResponse(
+            success = true,
+            data = employeeService.insertEmployee(insertRequest)
+        )
     }
 
     @GetMapping("/{empNo}/update")

@@ -8,7 +8,16 @@ import com.example.domain.Employee
 import java.time.LocalDate
 
 interface EmployeesRepository {
+    fun saveEmployee(
+        birthDate: LocalDate,
+        firstName: String,
+        lastName: String,
+        gender: Gender,
+        hireDate: LocalDate
+    ): Employee
+
     fun findByEmpNo(empNo: Int): Employee?
+
     fun updateEmployee(
         empNo: Int,
         birthDate: LocalDate? = null,
@@ -19,7 +28,9 @@ interface EmployeesRepository {
     ): Boolean
 
     fun findEmployeeBetweenStartDateAndEndDate(startDate: LocalDate, endDate: LocalDate, pageRequest: PageRequest): Page<Employee>
+
     fun deleteEmployee(empNo: Int): Boolean
+
     fun saveDeletedEmployee(
         empNo: Int,
         birthDate: LocalDate,

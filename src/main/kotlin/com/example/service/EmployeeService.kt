@@ -5,6 +5,7 @@ import com.example.common.Page
 import com.example.common.PageRequest
 import com.example.common.PageResponse
 import com.example.domain.Employee
+import com.example.dto.EmployeeInsertRequest
 import com.example.dto.EmployeeUpdateRequest
 import com.example.exception.ResourceNotFoundException
 import com.example.repository.EmployeesRepository
@@ -13,13 +14,26 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
+@Transactional(readOnly = true)
 class EmployeeService(
     private val mybatisEmployeeRepository: EmployeesRepository
 ) {
+    @Transactional
+    fun insertEmployee(insertRequest: EmployeeInsertRequest): Employee {
+        return mybatisEmployeeRepository.saveEmployee(
+            birthDate = insertRequest.birthDate,
+            firstName = insertRequest.firstName,
+            lastName = insertRequest.lastName,
+            gender = insertRequest.gender,
+            hireDate = insertRequest.hireDate
+        )
+    }
+
     fun findEmployeeByEmpNo(empNo: Int): Employee {
         return findEmployeeOrThrow(empNo)
     }
 
+    @Transactional
     fun updateEmployeeFirstName(empNo: Int, updateRequest: EmployeeUpdateRequest): Employee {
         check(mybatisEmployeeRepository.updateEmployee(empNo,
             firstName = updateRequest.firstName,

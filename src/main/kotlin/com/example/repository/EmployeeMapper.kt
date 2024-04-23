@@ -5,8 +5,13 @@ import com.example.constant.Gender
 import com.example.domain.Employee
 import com.example.repository.table.EMPLOYEE_TABLE
 import org.apache.ibatis.annotations.Delete
+import org.apache.ibatis.annotations.Insert
+import org.apache.ibatis.annotations.InsertProvider
 import org.apache.ibatis.annotations.Mapper
+import org.apache.ibatis.annotations.Options
+import org.apache.ibatis.annotations.ResultType
 import org.apache.ibatis.annotations.Select
+import org.apache.ibatis.annotations.SelectKey
 import org.apache.ibatis.annotations.UpdateProvider
 import org.apache.ibatis.jdbc.SQL
 import java.time.LocalDate
@@ -14,12 +19,22 @@ import java.time.LocalDate
 @Mapper
 interface EmployeeMapper {
 
+    @InsertProvider(type = EmployeeSqlBuilder::class, method = "buildInsertEmployee")
+    @Options(useGeneratedKeys = true, keyColumn = "emp_no")
+    fun saveEmployee(
+        birthDate: LocalDate,
+        firstName: String,
+        lastName: String,
+        gender: Gender,
+        hireDate: LocalDate
+    ): Int
+
     @Select("SELECT count(*) FROM $EMPLOYEE_TABLE")
     fun getEmployeeCount(): Int
 
     @Select("SELECT * FROM $EMPLOYEE_TABLE WHERE emp_no = #{empNo}")
-
     fun findByEmpNo(empNo: Int): Employee?
+
     @Select("SELECT * FROM $EMPLOYEE_TABLE " +
             "WHERE hire_date BETWEEN #{startDate} AND #{endDate} " +
             "ORDER BY hire_date ASC " +
@@ -41,6 +56,25 @@ interface EmployeeMapper {
     ): Boolean
 
     class EmployeeSqlBuilder {
+        fun buildInsertEmployee(
+            birthDate: LocalDate?,
+            firstName: String?,
+            lastName: String?,
+            gender: Gender?,
+            hireDate: LocalDate?
+        ): String {
+            return object : SQL(){
+                init {
+                    INSERT_INTO(EMPLOYEE_TABLE)
+                    VALUES("birth_date", "#{birthDate}")
+                    VALUES("first_name", "#{firstName}")
+                    VALUES("last_name", "#{lastName}")
+                    VALUES("gender", "#{gender}")
+                    VALUES("hire_date", "#{hireDate}")
+                }
+            }.toString()
+        }
+
         fun buildUpdateEmployee(
             empNo: Int,
             birthDate: LocalDate?,

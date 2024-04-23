@@ -10,4 +10,5 @@ class Employee(
     var lastname: String,
     val gender: Gender,
     val hireDate: LocalDate) {
+
 }

@@ -58,8 +58,7 @@ class MybatisEmployeeRepository(
         hireDate: LocalDate,
         deletedDate: LocalDate
     ): Boolean
-        = throw IllegalArgumentException()
-        /*= deletedEmployeeMapper.saveDeletedEmployee(
+        = deletedEmployeeMapper.saveDeletedEmployee(
             empNo = empNo,
             birthDate = birthDate,
             firstName = firstName,
@@ -67,5 +66,22 @@ class MybatisEmployeeRepository(
             gender = gender,
             hireDate = hireDate,
             deletedDate = deletedDate
-        )*/
+        )
+
+    override fun saveEmployee(
+        birthDate: LocalDate,
+        firstName: String,
+        lastName: String,
+        gender: Gender,
+        hireDate: LocalDate
+    ): Employee {
+        val key = employeeMapper.saveEmployee(
+            birthDate = birthDate,
+            firstName = firstName,
+            lastName = lastName,
+            gender = gender,
+            hireDate = hireDate,
+        )
+        return employeeMapper.findByEmpNo(key) ?: throw NoSuchElementException()
+    }
 }

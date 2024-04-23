@@ -68,4 +68,14 @@ class MemoryEmployeeRepository : EmployeesRepository {
     ): Boolean {
         TODO("Not yet implemented")
     }
+
+    override fun saveEmployee(
+        birthDate: LocalDate,
+        firstName: String,
+        lastName: String,
+        gender: Gender,
+        hireDate: LocalDate
+    ): Employee {
+        TODO("Not yet implemented")
+    }
 }
