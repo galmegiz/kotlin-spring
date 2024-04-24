@@ -16,3 +16,12 @@ CREATE TABLE deleted_employees(
     hire_date DATE,
     deleted_date DATE
 );
+
+CREATE TABLE service_user(
+    id BIGINT PRIMARY KEY,
+    user_name VARCHAR(20),
+    password VARCHAR(20),
+    email VARCHAR(30),
+    last_login_at DATETIME,
+    deleted_at DATE
+);

@@ -1,5 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val jwtVersion by extra { "0.11.5" }
+
 plugins {
 	id("org.springframework.boot") version "3.2.4"
 	id("io.spring.dependency-management") version "1.1.4"
@@ -34,6 +36,10 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
+
+	implementation("io.jsonwebtoken:jjwt-api:$jwtVersion")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:$jwtVersion")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
 }
 
 tasks.withType<KotlinCompile> {

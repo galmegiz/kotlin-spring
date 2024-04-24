@@ -12,6 +12,9 @@ enum class ErrorCode(
 ) {
     UNKNOWN_SERVER_ERROR("F99999", "알 수 없는 서버 에러입니다", HttpStatus.INTERNAL_SERVER_ERROR),
 
+    BAD_CREDENTIALS_ERROR("E01100", "로그인에 실패하였습니다.", HttpStatus.UNAUTHORIZED),
+
     //employees
-    EMPLOYEE_NOT_FOUND("A00001", "종사자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND, logLevel = Level.INFO)
+    EMPLOYEE_NOT_FOUND("E01200", "종사자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND, logLevel = Level.INFO),
+
 }
