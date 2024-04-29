@@ -1,5 +1,8 @@
 package com.example.dto
 
-class UserSignUpResponse {
-
-}
+data class UserSignUpResponse(
+    val id: Long,
+    val email: String,
+    val userName: String,
+    val loginInfo: Login
+)

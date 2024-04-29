@@ -1,5 +1,5 @@
 package com.example.dto
 
-class UserLoginResponse {
-
-}
+class UserLoginResponse(
+    val loginInfo: Login
+)

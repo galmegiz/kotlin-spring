@@ -1,6 +1,7 @@
 package com.example.common.util
 
 import com.example.common.ErrorCode
+import com.example.dto.Token
 import com.example.exception.AuthenticationException
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Component
@@ -8,7 +9,7 @@ import org.springframework.util.StringUtils
 
 @Component
 class TokenUtil(
-    val jwtUtil: JwtUtil
+    private val jwtUtil: JwtUtil
 ) {
     companion object {
         private const val AUTHORIZATION_HEADER = "Authorization"
@@ -23,6 +24,10 @@ class TokenUtil(
             )
             else -> throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
         }
+    }
+
+    fun generateToken(userType: String, id: Long, email: String): Token{
+        return jwtUtil.generateToken("temp", id, email)
     }
 
     fun getToken(request: HttpServletRequest): String {

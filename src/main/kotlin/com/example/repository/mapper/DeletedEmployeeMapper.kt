@@ -1,12 +1,9 @@
-package com.example.repository
+package com.example.repository.mapper
 
 import com.example.constant.Gender
 import com.example.repository.table.DELETED_EMPLOYEE_TABLE
-import com.example.repository.table.EMPLOYEE_TABLE
-import org.apache.ibatis.annotations.Insert
 import org.apache.ibatis.annotations.InsertProvider
 import org.apache.ibatis.annotations.Mapper
-import org.apache.ibatis.annotations.UpdateProvider
 import org.apache.ibatis.jdbc.SQL
 import java.time.LocalDate
 

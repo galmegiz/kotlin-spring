@@ -18,10 +18,10 @@ CREATE TABLE deleted_employees(
 );
 
 CREATE TABLE service_user(
-    id BIGINT PRIMARY KEY,
+    user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_name VARCHAR(20),
-    password VARCHAR(20),
+    password VARCHAR(100),
     email VARCHAR(30),
-    last_login_at DATETIME,
-    deleted_at DATE
+    last_login_at DATETIME(6) DEFAULT NOW(6),
+    deleted_at DATE DEFAULT NULL
 );

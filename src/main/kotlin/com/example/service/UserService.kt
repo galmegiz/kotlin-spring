@@ -1,17 +1,51 @@
 package com.example.service
 
+import com.example.common.ErrorCode
+import com.example.common.util.TokenUtil
+import com.example.domain.User
+import com.example.dto.Login
 import com.example.dto.UserLoginRequest
 import com.example.dto.UserLoginResponse
 import com.example.dto.UserSignUpResponse
 import com.example.dto.UserSignupRequest
+import com.example.exception.AuthenticationException
+import com.example.repository.UserRepository
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
-class UserService {
+@Service
+class UserService(
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder,
+    private val tokenUtil: TokenUtil
+) {
 
     fun signupUser(request: UserSignupRequest): UserSignUpResponse{
-        return UserSignUpResponse()
+        val encodedPassword = passwordEncoder.encode(request.password)
+        val generatedId = userRepository.saveUser(request.email, encodedPassword, request.userName)
+        val token = tokenUtil.generateToken("test", generatedId, request.email)
+
+        return UserSignUpResponse(generatedId, request.email, request.userName,
+            loginInfo = Login(token))
     }
 
     fun loginUser(request: UserLoginRequest): UserLoginResponse{
-        return UserLoginResponse()
+        val user: User = findValidUserByEmail(request.email)
+
+        if(!passwordEncoder.matches(request.password, user.password))
+            throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+
+        user.updateLastLoginTime()
+        check(userRepository.updateUser(userId = user.id, lastLoginAt = user.lastLoginAt)){"update last login time fail"}
+
+        val token = tokenUtil.generateToken("etest", user.id, user.email)
+        return UserLoginResponse(loginInfo = Login(token))
+    }
+
+    private fun findValidUserByEmail(email: String): User {
+        val user: User = userRepository.findByUserEmail(email) ?: throw AuthenticationException(ErrorCode.USER_NOT_FOUND)
+        check(!user.isWithdrawal()) { "The user is withdraw" }
+        return user
     }
 }

@@ -7,6 +7,7 @@ import com.example.dto.UserSignUpResponse
 import com.example.dto.UserSignupRequest
 import com.example.service.UserService
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -16,14 +17,14 @@ class UserController(
     private val userService: UserService
 ) {
     @PostMapping("/user/signup")
-    fun signup(request: UserSignupRequest): CommonApiResponse<UserSignUpResponse>
+    fun signup(@RequestBody request: UserSignupRequest): CommonApiResponse<UserSignUpResponse>
          = CommonApiResponse(
             success = true,
             data = userService.signupUser(request))
 
     @PostMapping("/user/login")
     fun userLogin(
-        request: UserLoginRequest
+        @RequestBody request: UserLoginRequest
     ): CommonApiResponse<UserLoginResponse>
         = CommonApiResponse(
             success = true,

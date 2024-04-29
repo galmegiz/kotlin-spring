@@ -1,14 +1,13 @@
 package com.example.repository
 
-import com.example.common.ErrorCode
 import com.example.common.Page
 import com.example.common.PageRequest
 import com.example.constant.Gender
 import com.example.domain.Employee
-import com.example.exception.ResourceNotFoundException
+import com.example.repository.mapper.DeletedEmployeeMapper
+import com.example.repository.mapper.EmployeeMapper
 import org.apache.ibatis.annotations.Param
 import org.springframework.stereotype.Repository
-import java.lang.IllegalArgumentException
 import java.time.LocalDate
 
 @Repository

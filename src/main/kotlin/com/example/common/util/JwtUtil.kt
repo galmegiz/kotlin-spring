@@ -38,10 +38,10 @@ class JwtUtil(
             .claim("userId", id)
             .claim("email", email)
             .setExpiration(accessTokenExpireIn)
-            .signWith(key, SignatureAlgorithm.ES512)
+            .signWith(key, SignatureAlgorithm.HS512)
             .compact()
         return Token(
-            granType = GRANT_TYPE,
+            grantType = GRANT_TYPE,
             accessToken = accessToken,
             accessTokenExpiresIn = accessTokenExpireIn
         )
