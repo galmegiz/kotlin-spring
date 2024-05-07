@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     private val userService: UserService
 ) {
-    @PostMapping("/user/signup")
+    @PostMapping("/signup")
     fun signup(@RequestBody request: UserSignupRequest): CommonApiResponse<UserSignUpResponse>
          = CommonApiResponse(
             success = true,
             data = userService.signupUser(request))
 
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     fun userLogin(
         @RequestBody request: UserLoginRequest
     ): CommonApiResponse<UserLoginResponse>

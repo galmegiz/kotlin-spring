@@ -43,9 +43,9 @@ class UserService(
         return UserLoginResponse(loginInfo = Login(token))
     }
 
-    private fun findValidUserByEmail(email: String): User {
+    fun findValidUserByEmail(email: String): User {
         val user: User = userRepository.findByUserEmail(email) ?: throw AuthenticationException(ErrorCode.USER_NOT_FOUND)
-        check(!user.isWithdrawal()) { "The user is withdraw" }
+        check(!user.isWithdrawal()) { "The user(${user.email}) is withdraw" }
         return user
     }
 }
