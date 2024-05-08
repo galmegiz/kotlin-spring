@@ -3,14 +3,16 @@ package com.example.exception
 import com.example.common.ErrorCode
 import com.example.common.Log
 import com.example.common.CommonApiResponse
-import com.example.domain.Employee
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.event.Level
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import org.springframework.web.servlet.resource.NoResourceFoundException
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
+import java.lang.StringBuilder
 
 @RestControllerAdvice
 class ExceptionHandlerAdvice : Log {
@@ -41,18 +43,39 @@ class ExceptionHandlerAdvice : Log {
         )
     }
 
-/*    @ExceptionHandler(NoResourceFoundException::class)
-    fun noResourceFoundException(e: NoResourceFoundException): ResponseEntity<CommonApiResponse<Any?>>{
-        log.error("resource not found!! message: {}", e.message)
-//        throw ResourceNotFoundException(ErrorCode.EMPLOYEE_NOT_FOUND, Employee::class)
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun argumentNotValidHandler(e: MethodArgumentNotValidException): ResponseEntity<CommonApiResponse<Any?>>{
+        log.info("Invalid user input: {}", e.bindingResult.toString())
+
+        // TODO 필요하다면 개선
+        val sb = StringBuilder()
+        for (fieldError in e.bindingResult.fieldErrors) {
+            sb.append("field : ${fieldError.field}, rejectedValue : ${fieldError.rejectedValue}, msg : ${fieldError.defaultMessage}")
+            sb.append("\n")
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
             CommonApiResponse(
                 success = false,
-                errorCode = ErrorCode.EMPLOYEE_NOT_FOUND.code,
-                message = ErrorCode.EMPLOYEE_NOT_FOUND.message
+                errorCode = ErrorCode.INVALID_USER_INPUT.code,
+                message = sb.toString()
             )
         )
-    }*/
+    }
+
+    // HttpMessageConverter가 json -> object 변환 중 에러 ex) enum에 없는 값을 enum에 입력
+    // AbstractNamedValueMethodArgumentResolver가 Stirng -> Int과 같이 타입 변환 실패
+    @ExceptionHandler(value = [HttpMessageNotReadableException::class, MethodArgumentTypeMismatchException::class])
+    fun httpMessageConvertingExceptionHandler(e: Exception, httpRequest: HttpServletRequest): ResponseEntity<CommonApiResponse<Any?>>{
+        log.info("Http Request Parsing Error. request uri : {}, message : {}", httpRequest.requestURI, e.message)
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            CommonApiResponse(
+                success = false,
+                errorCode = ErrorCode.INVALID_USER_INPUT.code,
+                message = ErrorCode.INVALID_USER_INPUT.message
+            )
+        )
+    }
 
     @ExceptionHandler(BaseServiceException::class)
     fun baseExceptionHandler(e: BaseServiceException, request: HttpServletRequest): ResponseEntity<CommonApiResponse<Any?>>{

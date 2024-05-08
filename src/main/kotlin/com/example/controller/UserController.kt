@@ -6,6 +6,7 @@ import com.example.dto.UserLoginResponse
 import com.example.dto.UserSignUpResponse
 import com.example.dto.UserSignupRequest
 import com.example.service.UserService
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,7 +18,7 @@ class UserController(
     private val userService: UserService
 ) {
     @PostMapping("/signup")
-    fun signup(@RequestBody request: UserSignupRequest): CommonApiResponse<UserSignUpResponse>
+    fun signup(@RequestBody @Validated request: UserSignupRequest): CommonApiResponse<UserSignUpResponse>
          = CommonApiResponse(
             success = true,
             data = userService.signupUser(request))
