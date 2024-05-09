@@ -1,6 +1,6 @@
 package com.example.common.annotation
 
-import com.example.common.OAuthValidator
+import com.example.common.validator.OAuthValidator
 import com.example.constant.OAuthChannelType
 import jakarta.validation.Constraint
 import kotlin.reflect.KClass

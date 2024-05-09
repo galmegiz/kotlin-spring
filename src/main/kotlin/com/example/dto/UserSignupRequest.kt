@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotEmpty
 
 data class UserSignupRequest(
-    @NotEmpty
+    @field:NotEmpty
     val userName: String,
     @field:ValidOAuth(enumClass = OAuthChannelType::class)
     val oAuthChannelType: OAuthChannelType,

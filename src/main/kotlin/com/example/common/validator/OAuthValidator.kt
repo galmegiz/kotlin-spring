@@ -1,11 +1,12 @@
-package com.example.common
+package com.example.common.validator
 
+import com.example.common.Log
 import com.example.common.annotation.ValidOAuth
 import com.example.constant.OAuthChannelType
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 
-class OAuthValidator : ConstraintValidator<ValidOAuth, Enum<OAuthChannelType>> {
+class OAuthValidator : ConstraintValidator<ValidOAuth, Enum<OAuthChannelType>>, Log {
     private lateinit var annotation: ValidOAuth
 
     override fun initialize(constraintAnnotation: ValidOAuth) {

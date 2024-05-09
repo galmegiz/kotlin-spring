@@ -5,6 +5,7 @@ import com.example.common.ErrorCode
 import com.example.common.PageRequest
 import com.example.common.PageResponse
 import com.example.common.annotation.LoginUser
+import com.example.common.validator.EmployeeUpdateValidator
 import com.example.domain.Employee
 import com.example.domain.User
 import com.example.dto.EmployeeInsertRequest
@@ -14,8 +15,11 @@ import com.example.repository.EmployeesRepository
 import com.example.repository.MybatisEmployeeRepository
 import com.example.service.EmployeeService
 import org.apache.ibatis.annotations.Delete
+import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.InitBinder
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -29,8 +33,14 @@ import java.time.LocalDate
 @RestController
 @RequestMapping("/employee")
 class EmployeeController(
-    private val employeeService: EmployeeService
+    private val employeeService: EmployeeService,
+    private val updateValidator: EmployeeUpdateValidator
 ) {
+
+    @InitBinder("employeeUpdateRequest")
+    fun init(webDataBinder: WebDataBinder){
+        webDataBinder.addValidators(updateValidator)
+    }
 
     @GetMapping("/test")
     fun hello(): String{
@@ -60,10 +70,10 @@ class EmployeeController(
         return employeeService.findEmployeeByPeriod(startDate, endDate, pageRequest)
     }
 
-    @PostMapping("/insert")
+    @PostMapping
     fun insertEmployee(
         @LoginUser user: User,
-        @ModelAttribute insertRequest: EmployeeInsertRequest): CommonApiResponse<Employee> {
+        @Validated @RequestBody insertRequest: EmployeeInsertRequest): CommonApiResponse<Employee> {
         return CommonApiResponse(
             success = true,
             data = employeeService.insertEmployee(insertRequest)
@@ -74,7 +84,7 @@ class EmployeeController(
     fun updateEmployee(
         @LoginUser user: User,
         @PathVariable empNo: Int,
-        @ModelAttribute updateRequest: EmployeeUpdateRequest): CommonApiResponse<Employee> {
+        @Validated @RequestBody updateRequest: EmployeeUpdateRequest): CommonApiResponse<Employee> {
         val updatedEmployee = employeeService.updateEmployeeFirstName(empNo, updateRequest)
         return CommonApiResponse(
             success = true,

@@ -1,6 +1,7 @@
 package com.example.service
 
 import com.example.common.ErrorCode
+import com.example.common.Log
 import com.example.common.Page
 import com.example.common.PageRequest
 import com.example.common.PageResponse
@@ -17,16 +18,18 @@ import java.time.LocalDate
 @Transactional(readOnly = true)
 class EmployeeService(
     private val mybatisEmployeeRepository: EmployeesRepository
-) {
+) : Log {
     @Transactional
     fun insertEmployee(insertRequest: EmployeeInsertRequest): Employee {
-        return mybatisEmployeeRepository.saveEmployee(
+        val result = mybatisEmployeeRepository.saveEmployee(
             birthDate = insertRequest.birthDate,
             firstName = insertRequest.firstName,
             lastName = insertRequest.lastName,
             gender = insertRequest.gender,
             hireDate = insertRequest.hireDate
         )
+        log.info("{}", result)
+        return result
     }
 
     fun findEmployeeByEmpNo(empNo: Int): Employee {
