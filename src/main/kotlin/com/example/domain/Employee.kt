@@ -4,10 +4,10 @@ import com.example.constant.Gender
 import java.time.LocalDate
 
 data class Employee(
-    var empNo: Int,
+    val empNo: Int? = null,
     val birthDate: LocalDate,
     var firstName: String,
-    var lastname: String,
+    var lastName: String,
     val gender: Gender,
     val hireDate: LocalDate) {
 }

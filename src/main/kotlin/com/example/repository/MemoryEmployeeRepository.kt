@@ -2,7 +2,6 @@ package com.example.repository
 
 import com.example.common.Page
 import com.example.common.PageRequest
-import com.example.common.PageResponse
 import com.example.constant.Gender
 import com.example.domain.Employee
 import jakarta.annotation.PostConstruct
@@ -20,7 +19,7 @@ class MemoryEmployeeRepository : EmployeesRepository {
                 empNo = i,
                 birthDate = LocalDate.now().minusYears(i * 10L),
                 firstName = "JONGWOO $i",
-                lastname = "SUN",
+                lastName = "SUN",
                 Gender.entries[i % 2],
                 LocalDate.now().minusYears(i.toLong())
             )
@@ -69,13 +68,7 @@ class MemoryEmployeeRepository : EmployeesRepository {
         TODO("Not yet implemented")
     }
 
-    override fun saveEmployee(
-        birthDate: LocalDate,
-        firstName: String,
-        lastName: String,
-        gender: Gender,
-        hireDate: LocalDate
-    ): Employee {
+    override fun saveEmployee(employee: Employee): Int {
         TODO("Not yet implemented")
     }
 }

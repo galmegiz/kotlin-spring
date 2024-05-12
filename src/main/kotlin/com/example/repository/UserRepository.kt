@@ -10,8 +10,8 @@ class UserRepository(
     private val userMapper: UserMapper
 ) {
 
-    fun saveUser(email: String, password: String, userName: String): Long {
-        return userMapper.saveUser(email, password, userName)
+    fun saveUser(newUser: User): Long {
+        return userMapper.saveUser(newUser)
     }
 
     fun findByUserId(userId: Long): User?{

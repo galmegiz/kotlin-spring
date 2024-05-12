@@ -17,13 +17,9 @@ import java.time.LocalDate
 interface EmployeeMapper {
 
     @InsertProvider(type = EmployeeSqlBuilder::class, method = "buildInsertEmployee")
-    @Options(useGeneratedKeys = true, keyColumn = "emp_no")
+    @Options(useGeneratedKeys = true, keyProperty = "empNo", keyColumn = "emp_no")
     fun saveEmployee(
-        birthDate: LocalDate,
-        firstName: String,
-        lastName: String,
-        gender: Gender,
-        hireDate: LocalDate
+        employee: Employee
     ): Int
 
     @Select("SELECT count(*) FROM $EMPLOYEE_TABLE")
@@ -54,11 +50,7 @@ interface EmployeeMapper {
 
     class EmployeeSqlBuilder {
         fun buildInsertEmployee(
-            birthDate: LocalDate?,
-            firstName: String?,
-            lastName: String?,
-            gender: Gender?,
-            hireDate: LocalDate?
+          employee: Employee
         ): String {
             return object : SQL(){
                 init {

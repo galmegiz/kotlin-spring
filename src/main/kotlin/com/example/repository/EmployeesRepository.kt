@@ -9,12 +9,8 @@ import java.time.LocalDate
 
 interface EmployeesRepository {
     fun saveEmployee(
-        birthDate: LocalDate,
-        firstName: String,
-        lastName: String,
-        gender: Gender,
-        hireDate: LocalDate
-    ): Employee
+       employee: Employee
+    ): Int
 
     fun findByEmpNo(empNo: Int): Employee?
 

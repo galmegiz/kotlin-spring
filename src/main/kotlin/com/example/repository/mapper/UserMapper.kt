@@ -17,11 +17,9 @@ import java.time.LocalDateTime
 interface UserMapper {
 
     @Insert("INSERT INTO $USER_TABLE (user_name, password, email) values(#{userName}, #{password}, #{email})")
-    @Options(useGeneratedKeys = true, keyColumn = "user_id")
+    @Options(useGeneratedKeys = true, keyColumn = "user_id", keyProperty = "id")
     fun saveUser(
-        email: String,
-        password: String,
-        userName: String,
+       user: User
     ): Long
 
     @Select("SELECT * FROM $USER_TABLE WHERE user_id = #{userId}")

@@ -21,15 +21,16 @@ class EmployeeService(
 ) : Log {
     @Transactional
     fun insertEmployee(insertRequest: EmployeeInsertRequest): Employee {
-        val result = mybatisEmployeeRepository.saveEmployee(
+        val newEmployee = Employee(
             birthDate = insertRequest.birthDate,
             firstName = insertRequest.firstName,
             lastName = insertRequest.lastName,
             gender = insertRequest.gender,
             hireDate = insertRequest.hireDate
         )
-        log.info("{}", result)
-        return result
+        mybatisEmployeeRepository.saveEmployee(newEmployee)
+        log.info("{}", newEmployee)
+        return newEmployee
     }
 
     fun findEmployeeByEmpNo(empNo: Int): Employee {
@@ -63,10 +64,10 @@ class EmployeeService(
         val employee = findEmployeeOrThrow(empNo)
         check(mybatisEmployeeRepository.deleteEmployee(empNo)){ "delete employee fail!!" }
         check(mybatisEmployeeRepository.saveDeletedEmployee(
-            empNo = employee.empNo,
+            empNo = employee.empNo!!,
             birthDate = employee.birthDate,
             firstName = employee.firstName,
-            lastName = employee.lastname,
+            lastName = employee.lastName,
             gender = employee.gender,
             hireDate = employee.hireDate,
             deletedDate = LocalDate.now()

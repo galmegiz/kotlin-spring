@@ -1,5 +1,7 @@
 package com.example.common.validator
 
+import com.example.domain.MIN_BIRTH_DATE
+import com.example.domain.MIN_HIRE_DATE
 import com.example.dto.EmployeeUpdateRequest
 import org.springframework.stereotype.Component
 import org.springframework.validation.Errors
@@ -15,7 +17,7 @@ class EmployeeUpdateValidator : Validator {
     override fun validate(target: Any, errors: Errors) {
         val updateRequest = target as EmployeeUpdateRequest
         if (updateRequest.birthDate != null) {
-            if(updateRequest.birthDate > LocalDate.parse("1999-01-01"))
+            if(updateRequest.birthDate > LocalDate.parse(MIN_BIRTH_DATE))
                 errors.rejectValue("birthDate", "유효하지 않은 생일")
         }
 
@@ -30,7 +32,7 @@ class EmployeeUpdateValidator : Validator {
         }
 
         if (updateRequest.hireDate != null) {
-            if(updateRequest.hireDate > LocalDate.parse("2000-01-01"))
+            if(updateRequest.hireDate > LocalDate.parse(MIN_HIRE_DATE))
                 errors.rejectValue("hireDate", "유효하지 않은 고용일")
         }
     }

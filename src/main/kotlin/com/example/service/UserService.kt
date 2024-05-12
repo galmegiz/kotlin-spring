@@ -23,10 +23,12 @@ class UserService(
 
     fun signupUser(request: UserSignupRequest): UserSignUpResponse{
         val encodedPassword = passwordEncoder.encode(request.password)
-        val generatedId = userRepository.saveUser(request.email, encodedPassword, request.userName)
-        val token = tokenUtil.generateToken("test", generatedId, request.email)
+        val newUser = User.of(request.email, encodedPassword, request.userName)
+        userRepository.saveUser(newUser)
+        requireNotNull(newUser.id)
+        val token = tokenUtil.generateToken("test", newUser.id, request.email)
 
-        return UserSignUpResponse(generatedId, request.email, request.userName,
+        return UserSignUpResponse(newUser.id, request.email, request.userName,
             loginInfo = Login(token))
     }
 
@@ -37,6 +39,7 @@ class UserService(
             throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
 
         user.updateLastLoginTime()
+        requireNotNull(user.id)
         check(userRepository.updateUser(userId = user.id, lastLoginAt = user.lastLoginAt)){"update last login time fail"}
 
         val token = tokenUtil.generateToken("etest", user.id, user.email)

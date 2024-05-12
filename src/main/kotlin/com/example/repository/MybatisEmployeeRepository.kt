@@ -68,19 +68,8 @@ class MybatisEmployeeRepository(
         )
 
     override fun saveEmployee(
-        birthDate: LocalDate,
-        firstName: String,
-        lastName: String,
-        gender: Gender,
-        hireDate: LocalDate
-    ): Employee {
-        val key = employeeMapper.saveEmployee(
-            birthDate = birthDate,
-            firstName = firstName,
-            lastName = lastName,
-            gender = gender,
-            hireDate = hireDate,
-        )
-        return employeeMapper.findByEmpNo(key) ?: throw NoSuchElementException()
+        employee: Employee
+    ): Int {
+        return employeeMapper.saveEmployee(employee)
     }
 }
