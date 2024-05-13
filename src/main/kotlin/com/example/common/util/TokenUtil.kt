@@ -3,6 +3,9 @@ package com.example.common.util
 import com.example.common.ErrorCode
 import com.example.dto.Token
 import com.example.exception.AuthenticationException
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.UnsupportedJwtException
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
@@ -30,14 +33,10 @@ class TokenUtil(
         return jwtUtil.generateToken("temp", id, email)
     }
 
-    fun getToken(request: HttpServletRequest): String {
-        val token: String = getHttpRequestToken(request)
+    fun getToken(request: HttpServletRequest): String = getHttpRequestToken(request)
 
-        if (!jwtUtil.verifyToken(token)) {
-            throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
-        }
-        return token
-    }
+    @Throws(SecurityException::class, MalformedJwtException::class, ExpiredJwtException::class, UnsupportedJwtException::class, IllegalStateException::class)
+    fun verifyToken(token: String): Boolean = jwtUtil.verifyToken(token)
 
     fun getId(token: String): Long = jwtUtil.getClaim(token, "userId")?.toLong()
         ?: throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)

@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 class EmployeeService(
     private val mybatisEmployeeRepository: EmployeesRepository
 ) : Log {
-    @Transactional
+
     fun insertEmployee(insertRequest: EmployeeInsertRequest): Employee {
         val newEmployee = Employee(
             birthDate = insertRequest.birthDate,
@@ -33,11 +33,11 @@ class EmployeeService(
         return newEmployee
     }
 
+    @Transactional(readOnly = true)
     fun findEmployeeByEmpNo(empNo: Int): Employee {
         return findEmployeeOrThrow(empNo)
     }
 
-    @Transactional
     fun updateEmployeeFirstName(empNo: Int, updateRequest: EmployeeUpdateRequest): Employee {
         check(mybatisEmployeeRepository.updateEmployee(empNo,
             firstName = updateRequest.firstName,
@@ -48,6 +48,7 @@ class EmployeeService(
         return findEmployeeByEmpNo(empNo)
     }
 
+    @Transactional(readOnly = true)
     fun findEmployeeByPeriod(startDate: LocalDate, endDate: LocalDate, pageRequest: PageRequest): PageResponse<Employee> {
         val employees: Page<Employee> = mybatisEmployeeRepository.findEmployeeBetweenStartDateAndEndDate(startDate, endDate, pageRequest)
         return PageResponse(
@@ -75,6 +76,7 @@ class EmployeeService(
         return true
     }
 
+    @Transactional(readOnly = true)
     private fun findEmployeeOrThrow(empNo: Int): Employee = mybatisEmployeeRepository.findByEmpNo(empNo)
         ?: throw ResourceNotFoundException(ErrorCode.EMPLOYEE_NOT_FOUND, Employee::class)
 }

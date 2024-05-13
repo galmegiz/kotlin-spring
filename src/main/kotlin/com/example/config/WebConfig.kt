@@ -18,6 +18,9 @@ class WebConfig(
         registry.addInterceptor(tokenVerifyInterceptor)
             .addPathPatterns("/**")
             .excludePathPatterns("/user/*")
+            .excludePathPatterns("/auth/*")
+            .excludePathPatterns("/h2-console/*")
+            .excludePathPatterns("/favicon.ico")
     }
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {

@@ -40,10 +40,21 @@ class JwtUtil(
             .setExpiration(accessTokenExpireIn)
             .signWith(key, SignatureAlgorithm.HS512)
             .compact()
+
+        val refreshTokenExpiresIn = Date(now + refreshTokenExpireTime)
+        val refreshToken: String = Jwts.builder()
+            .setExpiration(refreshTokenExpiresIn)
+            .claim("userId", id)
+            .claim("email", email)
+            .signWith(key, SignatureAlgorithm.HS512)
+            .compact()
+
         return Token(
             grantType = GRANT_TYPE,
             accessToken = accessToken,
-            accessTokenExpiresIn = accessTokenExpireIn
+            refreshToken = refreshToken,
+            accessTokenExpiresIn = accessTokenExpireIn,
+            refreshTokenExpiresIn = refreshTokenExpiresIn
         )
     }
 

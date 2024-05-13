@@ -17,6 +17,7 @@ enum class ErrorCode(
     // auth(E011)
     BAD_CREDENTIALS_ERROR("E01100", "로그인에 실패하였습니다.", HttpStatus.UNAUTHORIZED),
     USER_NOT_FOUND("E01101", "유효한 유저가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    TOKEN_EXPIRED("E01102", "토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED),
 
     //employees(E012)
     EMPLOYEE_NOT_FOUND("E01200", "종사자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND, logLevel = Level.INFO),

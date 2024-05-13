@@ -25,3 +25,8 @@ CREATE TABLE service_user(
     last_login_at DATETIME(6) DEFAULT NOW(6),
     deleted_at DATE DEFAULT NULL
 );
+
+CREATE TABLE refresh_tokens(
+    email VARCHAR(20) PRIMARY KEY,
+    token_value CHAR(60)
+);

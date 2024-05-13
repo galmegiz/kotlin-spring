@@ -2,10 +2,10 @@ package com.example.dto
 
 class RefreshToken(
     val email: String,
-    var value: String
+    var tokenValue: String
 ) {
-    fun updateValue(token: String): RefreshToken {
-        this.value = token
+    fun updateToken(token: String): RefreshToken {
+        this.tokenValue = token
         return this
     }
 }

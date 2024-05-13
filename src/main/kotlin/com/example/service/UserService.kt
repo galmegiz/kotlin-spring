@@ -12,13 +12,15 @@ import com.example.exception.AuthenticationException
 import com.example.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Service
+@Transactional
 class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val tokenUtil: TokenUtil
+    private val authService: AuthService,
 ) {
 
     fun signupUser(request: UserSignupRequest): UserSignUpResponse{
@@ -26,7 +28,7 @@ class UserService(
         val newUser = User.of(request.email, encodedPassword, request.userName)
         userRepository.saveUser(newUser)
         requireNotNull(newUser.id)
-        val token = tokenUtil.generateToken("test", newUser.id, request.email)
+        val token = authService.generateToken(newUser)
 
         return UserSignUpResponse(newUser.id, request.email, request.userName,
             loginInfo = Login(token))
@@ -42,10 +44,11 @@ class UserService(
         requireNotNull(user.id)
         check(userRepository.updateUser(userId = user.id, lastLoginAt = user.lastLoginAt)){"update last login time fail"}
 
-        val token = tokenUtil.generateToken("etest", user.id, user.email)
+        val token = authService.generateToken(user)
         return UserLoginResponse(loginInfo = Login(token))
     }
 
+    @Transactional(readOnly = true)
     fun findValidUserByEmail(email: String): User {
         val user: User = userRepository.findByUserEmail(email) ?: throw AuthenticationException(ErrorCode.USER_NOT_FOUND)
         check(!user.isWithdrawal()) { "The user(${user.email}) is withdraw" }

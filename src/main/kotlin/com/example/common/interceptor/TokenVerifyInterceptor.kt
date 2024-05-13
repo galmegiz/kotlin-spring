@@ -5,11 +5,15 @@ import com.example.common.Log
 import com.example.common.util.TokenUtil
 import com.example.exception.AuthenticationException
 import com.example.service.UserService
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.MalformedJwtException
+import io.jsonwebtoken.UnsupportedJwtException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
+import java.lang.IllegalArgumentException
 
 @Component
 class TokenVerifyInterceptor(
@@ -27,21 +31,38 @@ class TokenVerifyInterceptor(
 
         try {
             val token: String = tokenUtil.getToken(request)
+            tokenUtil.verifyToken(token)
             val userEmail = tokenUtil.getEmail(token)
             val user = userService.findValidUserByEmail(userEmail)
             request.setAttribute(USER_KEY, user)
-        } catch (e: IllegalStateException) {
-            log.warn("user email is not valid. msg : {}", e.message)
-            throw AuthenticationException(ErrorCode.USER_NOT_FOUND)
-        } catch (e: AuthenticationException) {
-            log.warn("user token is not valid. msg : {}", e.message)
-            throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
         } catch (e: Exception) {
-            log.error("error occurs on verifying token. request uri : {}, token - {}, msg - {}",
-                request.requestURI,
-                request.getHeader("Authorization"),
-                e.message)
-            throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+            when (e) {
+                is SecurityException,
+                is MalformedJwtException,
+                is UnsupportedJwtException,
+                is IllegalArgumentException -> {
+                    log.debug("token is expired")
+                    throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+                }
+                is ExpiredJwtException -> {
+                    log.debug("token is expired")
+                    throw AuthenticationException(ErrorCode.TOKEN_EXPIRED)
+                }
+                is IllegalStateException -> {
+                    log.warn("user email is not valid. msg : {}", e.message)
+                    throw AuthenticationException(ErrorCode.USER_NOT_FOUND)
+                }
+                is AuthenticationException -> {
+                    log.warn("user token is not valid. msg : {}", e.message)
+                    throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+                }
+                else -> {log.error("unexpected error occurs on verifying token. request uri : {}, token - {}, msg - {}",
+                    request.requestURI,
+                    request.getHeader("Authorization"),
+                    e.message)
+                throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)}
+
+            }
         }
         return true
     }
