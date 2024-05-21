@@ -71,4 +71,8 @@ class MemoryEmployeeRepository : EmployeesRepository {
     override fun saveEmployee(employee: Employee): Int {
         TODO("Not yet implemented")
     }
+
+    override fun findByFirstName(firstName: String): Employee? {
+        TODO("Not yet implemented")
+    }
 }

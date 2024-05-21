@@ -6,6 +6,7 @@ import com.example.constant.Gender
 import com.example.domain.Employee
 import com.example.repository.mapper.DeletedEmployeeMapper
 import com.example.repository.mapper.EmployeeMapper
+import com.example.repository.mapper.EmployeeXmlMapper
 import org.apache.ibatis.annotations.Param
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
@@ -13,11 +14,16 @@ import java.time.LocalDate
 @Repository
 class MybatisEmployeeRepository(
     private val employeeMapper: EmployeeMapper,
+    private val employeeXmlMapper: EmployeeXmlMapper,
     private val deletedEmployeeMapper: DeletedEmployeeMapper
 ) : EmployeesRepository {
 
     override fun findByEmpNo(@Param("empNo") empNo: Int): Employee? {
         return employeeMapper.findByEmpNo(empNo)
+    }
+
+    override fun findByFirstName(firstName: String): Employee? {
+        return employeeXmlMapper.findByFirstName(firstName)
     }
 
     override fun updateEmployee(

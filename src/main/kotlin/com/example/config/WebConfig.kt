@@ -17,6 +17,7 @@ class WebConfig(
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(tokenVerifyInterceptor)
             .addPathPatterns("/**")
+            .excludePathPatterns("/employee/name/**")
             .excludePathPatterns("/user/*")
             .excludePathPatterns("/auth/*")
             .excludePathPatterns("/h2-console/*")

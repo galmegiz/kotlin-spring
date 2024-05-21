@@ -79,4 +79,8 @@ class EmployeeService(
     @Transactional(readOnly = true)
     private fun findEmployeeOrThrow(empNo: Int): Employee = mybatisEmployeeRepository.findByEmpNo(empNo)
         ?: throw ResourceNotFoundException(ErrorCode.EMPLOYEE_NOT_FOUND, Employee::class)
+
+    @Transactional(readOnly = true)
+    fun findEmployeeByName(name: String): Employee = mybatisEmployeeRepository.findByFirstName(name)
+        ?: throw ResourceNotFoundException(ErrorCode.EMPLOYEE_NOT_FOUND, Employee::class)
 }

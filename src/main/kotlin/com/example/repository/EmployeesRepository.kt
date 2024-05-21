@@ -14,6 +14,8 @@ interface EmployeesRepository {
 
     fun findByEmpNo(empNo: Int): Employee?
 
+    fun findByFirstName(firstName: String): Employee?
+
     fun updateEmployee(
         empNo: Int,
         birthDate: LocalDate? = null,

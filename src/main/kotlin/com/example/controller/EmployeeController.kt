@@ -1,7 +1,6 @@
 package com.example.controller
 
 import com.example.common.CommonApiResponse
-import com.example.common.ErrorCode
 import com.example.common.PageRequest
 import com.example.common.PageResponse
 import com.example.common.annotation.LoginUser
@@ -10,17 +9,12 @@ import com.example.domain.Employee
 import com.example.domain.User
 import com.example.dto.EmployeeInsertRequest
 import com.example.dto.EmployeeUpdateRequest
-import com.example.exception.ResourceNotFoundException
-import com.example.repository.EmployeesRepository
-import com.example.repository.MybatisEmployeeRepository
 import com.example.service.EmployeeService
-import org.apache.ibatis.annotations.Delete
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.InitBinder
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -52,6 +46,16 @@ class EmployeeController(
         @LoginUser user: User,
         @PathVariable empNo: Int): CommonApiResponse<Employee> {
         val employee = employeeService.findEmployeeByEmpNo(empNo)
+        return CommonApiResponse(
+            success = true,
+            data = employee
+        )
+    }
+
+    @GetMapping("/{firstName}")
+    fun getEmployee(
+        @PathVariable firstName: String): CommonApiResponse<Employee> {
+        val employee = employeeService.findEmployeeByName(firstName)
         return CommonApiResponse(
             success = true,
             data = employee
