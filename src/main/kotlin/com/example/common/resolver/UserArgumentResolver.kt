@@ -4,7 +4,7 @@ import com.example.common.ErrorCode
 import com.example.common.annotation.LoginUser
 import com.example.common.interceptor.TokenVerifyInterceptor
 import com.example.domain.User
-import com.example.exception.AuthenticationException
+import com.example.exception.SecurityException
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
@@ -27,6 +27,6 @@ class UserArgumentResolver : HandlerMethodArgumentResolver {
     ): User {
         return webRequest.getNativeRequest(HttpServletRequest::class.java)
             ?.getAttribute(TokenVerifyInterceptor.USER_KEY) as User?
-            ?: throw AuthenticationException(ErrorCode.USER_NOT_FOUND)
+            ?: throw SecurityException(ErrorCode.USER_NOT_FOUND)
     }
 }

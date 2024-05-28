@@ -9,7 +9,17 @@ class User(
     val password: String?,
     val userName: String,
     var lastLoginAt: LocalDateTime? = null,
-    val deletedAt: LocalDate?) {
+    val deletedAt: LocalDate?,
+    var roleName: String? = "VISITOR"
+) {
+
+    constructor(id: Long?,
+                email: String,
+                password: String?,
+                userName: String,
+                lastLoginAt: LocalDateTime? = null,
+                deletedAt: LocalDate?) : this(id, email, password, userName, lastLoginAt, deletedAt, "VISITOR")
+
 
     companion object{
         fun of(

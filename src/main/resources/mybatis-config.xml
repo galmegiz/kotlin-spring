@@ -1,0 +1,6 @@
+<configuration>
+    <settings>
+        <!-- unknownColumnBehavior 옵션을 NONE으로 설정하여 매핑되지 않는 컬럼을 무시 -->
+        <setting name="autoMappingUnknownColumnBehavior" value="NONE"/>
+    </settings>
+</configuration>

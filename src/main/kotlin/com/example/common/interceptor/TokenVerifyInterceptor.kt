@@ -3,7 +3,7 @@ package com.example.common.interceptor
 import com.example.common.ErrorCode
 import com.example.common.Log
 import com.example.common.util.TokenUtil
-import com.example.exception.AuthenticationException
+import com.example.exception.SecurityException
 import com.example.service.UserService
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
@@ -37,30 +37,32 @@ class TokenVerifyInterceptor(
             request.setAttribute(USER_KEY, user)
         } catch (e: Exception) {
             when (e) {
-                is SecurityException,
+                is java.lang.SecurityException,
                 is MalformedJwtException,
                 is UnsupportedJwtException,
                 is IllegalArgumentException -> {
                     log.debug("token is expired")
-                    throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+                    throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
                 }
                 is ExpiredJwtException -> {
                     log.debug("token is expired")
-                    throw AuthenticationException(ErrorCode.TOKEN_EXPIRED)
+                    throw SecurityException(ErrorCode.TOKEN_EXPIRED)
                 }
                 is IllegalStateException -> {
                     log.warn("user email is not valid. msg : {}", e.message)
-                    throw AuthenticationException(ErrorCode.USER_NOT_FOUND)
+                    throw SecurityException(ErrorCode.USER_NOT_FOUND)
                 }
-                is AuthenticationException -> {
+                is SecurityException -> {
                     log.warn("user token is not valid. msg : {}", e.message)
-                    throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+                    throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
                 }
-                else -> {log.error("unexpected error occurs on verifying token. request uri : {}, token - {}, msg - {}",
+                else -> {
+                    log.error("unexpected error occurs on verifying token. request uri : {}, token - {}, msg - {}",
                     request.requestURI,
                     request.getHeader("Authorization"),
-                    e.message)
-                throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)}
+                    e.message, e)
+                throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
+                }
 
             }
         }

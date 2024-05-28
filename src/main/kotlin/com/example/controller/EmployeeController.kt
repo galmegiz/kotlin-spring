@@ -3,6 +3,7 @@ package com.example.controller
 import com.example.common.CommonApiResponse
 import com.example.common.PageRequest
 import com.example.common.PageResponse
+import com.example.common.annotation.Authorization
 import com.example.common.annotation.LoginUser
 import com.example.common.validator.EmployeeUpdateValidator
 import com.example.domain.Employee
@@ -52,7 +53,7 @@ class EmployeeController(
         )
     }
 
-    @GetMapping("/{firstName}")
+    @GetMapping("/name/{firstName}")
     fun getEmployee(
         @PathVariable firstName: String): CommonApiResponse<Employee> {
         val employee = employeeService.findEmployeeByName(firstName)
@@ -75,6 +76,7 @@ class EmployeeController(
     }
 
     @PostMapping
+    @Authorization("MANAGER")
     fun insertEmployee(
         @LoginUser user: User,
         @Validated @RequestBody insertRequest: EmployeeInsertRequest): CommonApiResponse<Employee> {

@@ -2,7 +2,7 @@ package com.example.common.util
 
 import com.example.common.ErrorCode
 import com.example.dto.Token
-import com.example.exception.AuthenticationException
+import com.example.exception.SecurityException
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.UnsupportedJwtException
@@ -25,7 +25,7 @@ class TokenUtil(
             StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX) -> bearerToken.substring(
                 BEARER_PREFIX.length
             )
-            else -> throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+            else -> throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
         }
     }
 
@@ -39,8 +39,8 @@ class TokenUtil(
     fun verifyToken(token: String): Boolean = jwtUtil.verifyToken(token)
 
     fun getId(token: String): Long = jwtUtil.getClaim(token, "userId")?.toLong()
-        ?: throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+        ?: throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
 
     fun getEmail(token: String): String = jwtUtil.getClaim(token, "email")
-        ?: throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+        ?: throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
 }

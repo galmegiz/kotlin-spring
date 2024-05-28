@@ -30,3 +30,9 @@ CREATE TABLE refresh_tokens(
     email VARCHAR(20) PRIMARY KEY,
     token_value CHAR(60)
 );
+
+CREATE TABLE role_hierarchy(
+    id SMALLINT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(20) UNIQUE NOT NULL,
+    parent_role_id SMALLINT DEFAULT NULL
+);

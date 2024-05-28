@@ -1,5 +1,6 @@
 package com.example.config
 
+import com.example.common.interceptor.AuthorizationInterceptor
 import com.example.common.interceptor.TokenVerifyInterceptor
 import com.example.common.resolver.UserArgumentResolver
 import com.example.common.util.TokenUtil
@@ -11,7 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class WebConfig(
     private val tokenVerifyInterceptor: TokenVerifyInterceptor,
-    private val loginArgumentResolver: UserArgumentResolver
+    private val loginArgumentResolver: UserArgumentResolver,
+    private val authorizationInterceptor: AuthorizationInterceptor
 ) : WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
@@ -22,6 +24,9 @@ class WebConfig(
             .excludePathPatterns("/auth/*")
             .excludePathPatterns("/h2-console/*")
             .excludePathPatterns("/favicon.ico")
+
+        registry.addInterceptor(authorizationInterceptor)
+            .addPathPatterns("/**")
     }
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {

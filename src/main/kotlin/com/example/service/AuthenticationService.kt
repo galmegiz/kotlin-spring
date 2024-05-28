@@ -6,7 +6,7 @@ import com.example.common.util.TokenUtil
 import com.example.domain.User
 import com.example.dto.RefreshToken
 import com.example.dto.Token
-import com.example.exception.AuthenticationException
+import com.example.exception.SecurityException
 import com.example.repository.RefreshTokenRepository
 import com.example.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Transactional
 @Service
-class AuthService(
+class AuthenticationService(
     private val refreshTokenRepository: RefreshTokenRepository,
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
@@ -33,14 +33,14 @@ class AuthService(
     fun updateToken(tokenRefreshRequest: RefreshToken): Token {
         val email = tokenUtil.getEmail(tokenRefreshRequest.tokenValue)
         if(tokenRefreshRequest.email != email )
-            throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+            throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
         val user = userRepository.findByUserEmail(email) ?: throw NoSuchElementException()
 
         val oldRefreshToken = refreshTokenRepository.findByUserEmail(user.email)
 
         if (oldRefreshToken == null ||
             !passwordEncoder.matches(tokenRefreshRequest.tokenValue, oldRefreshToken.tokenValue)) {
-            throw AuthenticationException(ErrorCode.BAD_CREDENTIALS_ERROR)
+            throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
         }
 
         val updatedToken = tokenUtil.generateToken("test", user.id!!, user.email)

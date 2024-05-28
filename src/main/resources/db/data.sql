@@ -1,3 +1,5 @@
+INSERT INTO `role_hierarchy` VALUES (1, 'ADMIN', null), (2, 'MANAGER', 1), (3, 'USER', 2);
+
 INSERT INTO `employees` VALUES (10001,'1953-09-02','Georgi','Facello','M','1986-06-26'),
 (10002,'1964-06-02','Bezalel','Simmel','F','1985-11-21'),
 (10003,'1959-12-03','Parto','Bamford','M','1986-08-28'),
