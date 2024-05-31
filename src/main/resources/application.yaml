@@ -1,0 +1,54 @@
+spring:
+  application.name: demo
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  sql:
+    init:
+      mode: embedded
+      data-locations: classpath:db/data.sql
+      schema-locations: classpath:db/schema.sql
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+logging:
+  level:
+    jdbc:
+      sqlonly: off
+      sqltiming: info
+      resultsettable: info
+      audit: off
+      resultset: off
+      connection: off
+
+resilience4j:
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 1s
+        retryExceptions:
+          - com.example.exception.SecurityException
+        ignoreExceptions:
+          - com.example.exception.ResourceNotFoundException
+    instances:
+      retryConfig:
+        base-config: default
+
+jwt.secret: 4a1867e137617eae12bbd38ca661f6b790532456b6e4148956e66afb4d873e583b593023c05ac37ed972efcd23398fba226abd14dfc69685fc98531ec45ee86c
+# 1? (1000 * 60 * 60 * 24 * 1) 86400000
+jwt.access-token-expire-time: 86400000
+# 3? (1000 * 60 * 60 * 24 * 3) 259200000
+jwt.refresh-token-expire-time: 259200000
+
+    
+
