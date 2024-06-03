@@ -12,13 +12,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
+import org.springframework.web.servlet.resource.NoResourceFoundException
 import java.lang.StringBuilder
 
 @RestControllerAdvice
 class ExceptionHandlerAdvice : Log {
 
     @ExceptionHandler(Exception::class)
-    fun unExpectedExceptionHandler(e: Exception): ResponseEntity<CommonApiResponse<Any?>>{
+    fun unExpectedExceptionHandler(e: Exception, httpRequest: HttpServletRequest): ResponseEntity<CommonApiResponse<Any?>>{
+        log.error("request uri : {}", httpRequest.requestURI)
         log.error("UNEXPECTED_ERROR!! errorType : {}, message: {}", e::class, e.message)
         log.error("error trace log : ", e)
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
@@ -26,6 +28,18 @@ class ExceptionHandlerAdvice : Log {
                 success = false,
                 errorCode = ErrorCode.UNKNOWN_SERVER_ERROR.code,
                 message = ErrorCode.UNKNOWN_SERVER_ERROR.message
+            )
+        )
+    }
+
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun noResourceFoundExceptionHandler(e: NoResourceFoundException, httpRequest: HttpServletRequest): ResponseEntity<CommonApiResponse<Any?>>{
+        log.error("request uri : {}", httpRequest.requestURI)
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+            CommonApiResponse(
+                success = false,
+                errorCode = ErrorCode.USER_NOT_FOUND.code,
+                message = ErrorCode.USER_NOT_FOUND.message
             )
         )
     }

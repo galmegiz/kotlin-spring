@@ -44,6 +44,45 @@ resilience4j:
       retryConfig:
         base-config: default
 
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowType: COUNT_BASED
+        minimumNumberOfCalls: 1                                  # 최소 7번까지는 무조건 CLOSE로 가정
+        slidingWindowSize: 4                                    # 10개 요청 단위
+        waitDurationInOpenState: 10s                             # open -> halfopen 가는데 필요한 시간
+
+        failureRateThreshold: 40                                 # slidingWindowSize 중 몇 % 장애 시 open으로 만들 것인지?
+
+        slowCallDurationThreshold: 3000                          # 몇 ms 동안 요청이 처리되지 않으면 실패로 간주할 것인지?
+        slowCallRateThreshold: 60                                # slidingwindow중 몇 %가 slowcall이면 open으로 간주할 것인지?
+
+        permittedNumberOfCallsInHalfOpenState: 5                 # half-open 상태에서 5번까지는 close로 가기위해 호출한다
+        automaticTransitionFromOpenToHalfOpenEnabled: true       # open 상태에서 자동으로 half-open으로 갈 것인가?
+
+        eventConsumerBufferSize: 10                              # actuator를 위한 이벤트 버퍼 사이즈
+
+        recordExceptions:
+          - java.lang.IllegalArgumentException
+        ignoreExceptions:                                        # fallback은 실행된다
+          - java.lang.IllegalStateException
+
+    instances:
+      simpleCircuitBreakerConfig:
+        baseConfig: default
+
+management.endpoints.web.exposure.include : '*'
+management.endpoint.health.show-details: always
+management.health.diskspace.enabled: false
+management.health.circuitbreakers.enables: true
+
+management.metrics.tags.applications: ${spring.application.name}
+management.metrics.distribution.percentiles-histogram.http.server.requests: true
+management.metrics.distribution.percentils-histogram.resilience4j.circuitbreaker.calls: true
+
+
+
+
 jwt.secret: 4a1867e137617eae12bbd38ca661f6b790532456b6e4148956e66afb4d873e583b593023c05ac37ed972efcd23398fba226abd14dfc69685fc98531ec45ee86c
 # 1? (1000 * 60 * 60 * 24 * 1) 86400000
 jwt.access-token-expire-time: 86400000

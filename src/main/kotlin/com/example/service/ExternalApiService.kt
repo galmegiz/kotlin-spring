@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service
 @Service
 class ExternalApiService : Log{
     companion object {
-        const val SIMPLE_RETRY_CONFIG = "retryConfig"
+        const val DEFAULT_RETRY_CONFIG = "retryConfig"
     }
 
-    @Retry(name = SIMPLE_RETRY_CONFIG, fallbackMethod = "fallback")
+    @Retry(name = DEFAULT_RETRY_CONFIG, fallbackMethod = "fallback")
     fun requestApi(param: String): String {
         return callAnotherApi(param)
     }
