@@ -2,20 +2,19 @@ package com.example.controller
 
 import com.example.service.ExternalApiService
 import com.example.service.ExternalApiService2
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/test")
-class ResilienceController(
+@RequestMapping("/external")
+class ExternalApiController(
     private val externalApiService: ExternalApiService,
-    private val externalApiService2: ExternalApiService2
+    private val externalApiService2: ExternalApiService2,
 ) {
 
-    @GetMapping("")
-    fun test(): String {
+    @GetMapping("/retry")
+    fun retryTest(param: String): String {
         return externalApiService.requestApi("Aaa")
     }
 

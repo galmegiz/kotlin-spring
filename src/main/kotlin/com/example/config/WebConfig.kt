@@ -25,6 +25,7 @@ class WebConfig(
             .excludePathPatterns("/h2-console/*")
             .excludePathPatterns("/favicon.ico")
             .excludePathPatterns("/test/**")
+            .excludePathPatterns("/external/**")
 
         registry.addInterceptor(authorizationInterceptor)
             .addPathPatterns("/**")

@@ -48,20 +48,16 @@ class TokenVerifyInterceptor(
                     log.debug("token is expired")
                     throw SecurityException(ErrorCode.TOKEN_EXPIRED)
                 }
-                is IllegalStateException -> {
-                    log.warn("user email is not valid. msg : {}", e.message)
-                    throw SecurityException(ErrorCode.USER_NOT_FOUND)
-                }
                 is SecurityException -> {
-                    log.warn("user token is not valid. msg : {}", e.message)
-                    throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
+                    log.warn("user cannot access cause : {}", e.errorCode)
+                    throw e
                 }
                 else -> {
                     log.error("unexpected error occurs on verifying token. request uri : {}, token - {}, msg - {}",
                     request.requestURI,
                     request.getHeader("Authorization"),
                     e.message, e)
-                throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
+                    throw SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
                 }
 
             }

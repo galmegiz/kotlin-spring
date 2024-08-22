@@ -34,15 +34,19 @@ resilience4j:
   retry:
     configs:
       default:
-        maxAttempts: 3
-        waitDuration: 1s
-        retryExceptions:
-          - com.example.exception.SecurityException
-        ignoreExceptions:
+        maxAttempts: 3              #The maximum number of retry attempts
+        waitDuration: 1s            #A fixed wait duration between retry attempts
+        retryExceptions:            #Configures a list of error classes that are recorded as a failure and thus are retried
+          - com.example.exception.ExternalApiException
+        ignoreExceptions:           #Configures a list of error classes that are ignored and thus are not retried.
           - com.example.exception.ResourceNotFoundException
     instances:
-      retryConfig:
+      defaultConfig:
         base-config: default
+      advanceConfig:
+        base-config: default
+        maxAttempts: 5
+        waitDuration: 500ms
 
   circuitbreaker:
     configs:

@@ -7,12 +7,14 @@ import io.github.resilience4j.core.registry.EntryRemovedEvent
 import io.github.resilience4j.core.registry.EntryReplacedEvent
 import io.github.resilience4j.core.registry.RegistryEventConsumer
 import io.github.resilience4j.retry.Retry
+import io.github.resilience4j.retry.RetryRegistry
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class ResilienceConfig : Log {
-
+class ResilienceConfig(
+    private val retryRegistry: RetryRegistry
+) : Log {
     @Bean
     fun retryEventConsumer(): RegistryEventConsumer<Retry> {
         return object : RegistryEventConsumer<Retry> {
@@ -21,11 +23,11 @@ class ResilienceConfig : Log {
             }
 
             override fun onEntryRemovedEvent(entryRemoveEvent: EntryRemovedEvent<Retry>) {
-                log.info("entry removed")
+                TODO("Not yet implemented")
             }
 
             override fun onEntryReplacedEvent(entryReplacedEvent: EntryReplacedEvent<Retry>) {
-                log.info("replaced event")
+                TODO("Not yet implemented")
             }
         }
     }
