@@ -14,4 +14,13 @@ class ExternalClientA : ExternalClient, Log {
         log.info("request to $URL fail, param : {}", request)
         throw ExternalApiException(ErrorCode.UNKNOWN_SERVER_ERROR, URL)
     }
+
+    override fun request(request: String): String {
+        return "request to $URL (param : $request) success"
+    }
+
+    override fun timeout(param: String): String {
+        Thread.sleep(3000)
+        return param
+    }
 }

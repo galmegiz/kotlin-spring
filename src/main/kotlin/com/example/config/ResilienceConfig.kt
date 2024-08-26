@@ -12,9 +12,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class ResilienceConfig(
-    private val retryRegistry: RetryRegistry
-) : Log {
+class ResilienceConfig : Log {
     @Bean
     fun retryEventConsumer(): RegistryEventConsumer<Retry> {
         return object : RegistryEventConsumer<Retry> {
@@ -39,11 +37,9 @@ class ResilienceConfig(
                 val eventPublisher = entryAddedEvent.addedEntry.eventPublisher
 
                 eventPublisher.onEvent { event -> log.info("{}", event) }
-                eventPublisher.onCallNotPermitted { event -> log.info("{}", event) } // open상태로 변경시
-
+                eventPublisher.onCallNotPermitted { event -> log.info("{}", event) } // open 상태에서 요청이 들어온 경우
                 eventPublisher.onStateTransition { event -> log.info("{}", event) } // state가 변경될 경우 // 다른 서버로 장애 전파할 때 사용할 수 있음
-
-                eventPublisher.onFailureRateExceeded() { event -> log.info("{}", event.eventType) }
+                eventPublisher.onFailureRateExceeded { event -> log.info("{}", event.eventType) }
             }
 
             override fun onEntryRemovedEvent(entryRemoveEvent: EntryRemovedEvent<CircuitBreaker>) {

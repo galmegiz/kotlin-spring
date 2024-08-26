@@ -1,23 +1,27 @@
 package com.example.service
 
-import com.example.common.ErrorCode
 import com.example.common.Log
 import com.example.exception.ExternalApiException
-import com.example.exception.SecurityException
 import io.github.resilience4j.retry.annotation.Retry
 import org.springframework.stereotype.Service
 
 
 @Service
-class ExternalApiService(
+class ExternalRetryApiService(
     private val externalClients: ExternalClient
 ) : Log{
     companion object {
         const val DEFAULT_RETRY_CONFIG = "defaultConfig"
+        const val ADVANCED_RETRY_CONFIG = "advancedConfig"
     }
 
     @Retry(name = DEFAULT_RETRY_CONFIG, fallbackMethod = "fallback")
     fun requestApi(request: String): String {
+        return externalClients.requestEx(request)
+    }
+
+    @Retry(name = ADVANCED_RETRY_CONFIG, fallbackMethod = "fallback")
+    fun requestApi2(request: String): String {
         return externalClients.requestEx(request)
     }
 
