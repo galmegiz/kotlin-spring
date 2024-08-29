@@ -1,11 +1,11 @@
 package com.example.controller
 
-import demo.common.ErrorCode
-import demo.auth.dto.RefreshToken
-import demo.auth.dto.Token
-import demo.auth.service.AuthenticationService
-import demo.common.exception.SecurityException
-import demo.common.util.TokenUtil
+import domain.common.ErrorCode
+import domain.auth.dto.RefreshToken
+import domain.auth.dto.Token
+import domain.auth.service.AuthenticationService
+import domain.common.exception.SecurityException
+import domain.common.util.TokenUtil
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping

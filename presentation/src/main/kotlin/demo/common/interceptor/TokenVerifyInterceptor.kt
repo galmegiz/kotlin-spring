@@ -1,9 +1,9 @@
 package demo.common.interceptor
 
 import demo.common.Log
-import demo.common.ErrorCode
-import demo.auth.service.UserService
-import demo.common.util.TokenUtil
+import domain.common.ErrorCode
+import domain.auth.service.UserService
+import domain.common.util.TokenUtil
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.UnsupportedJwtException
@@ -13,7 +13,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import java.lang.IllegalArgumentException
-import demo.common.exception.SecurityException
+import domain.common.exception.SecurityException
 
 @Component
 class TokenVerifyInterceptor(
@@ -56,7 +56,7 @@ class TokenVerifyInterceptor(
                     request.requestURI,
                     request.getHeader("Authorization"),
                     e.message, e)
-                    throw demo.common.exception.SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
+                    throw domain.common.exception.SecurityException(ErrorCode.BAD_CREDENTIALS_ERROR)
                 }
 
             }

@@ -13,6 +13,17 @@ version = "0.0.1-SNAPSHOT"
 repositories {
     mavenCentral()
 }
+the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
+    imports {
+        mavenBom("io.github.resilience4j:resilience4j-bom:2.1.0")
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("io.github.resilience4j:resilience4j-bom:2.1.0")
+    }
+}
 
 configurations {
     compileOnly {
@@ -28,10 +39,11 @@ dependencies {
     implementation(project(":domain"))
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-
+    testImplementation("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3")
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("io.jsonwebtoken:jjwt-api:$jwtVersion")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:$jwtVersion")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
 
 }
 

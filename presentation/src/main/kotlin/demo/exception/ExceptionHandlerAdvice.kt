@@ -1,7 +1,7 @@
 package demo.exception
 
-import demo.common.ErrorCode
-import demo.common.exception.BaseServiceException
+import domain.common.ErrorCode
+import domain.common.exception.BaseServiceException
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.event.Level
 import org.springframework.http.HttpStatus

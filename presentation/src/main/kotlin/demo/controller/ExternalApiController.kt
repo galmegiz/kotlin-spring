@@ -1,7 +1,7 @@
 package com.example.controller
 
-import demo.common.external.ExternalCBApieService
-import demo.common.external.ExternalRetryApiService
+import domain.common.external.ExternalCBApieService
+import domain.common.external.ExternalRetryApiService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

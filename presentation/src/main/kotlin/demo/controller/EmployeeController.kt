@@ -1,12 +1,12 @@
 package com.example.controller
 
-import demo.common.PageRequest
-import demo.common.PageResponse
-import demo.auth.entity.User
-import demo.employee.dto.EmployeeInsertRequest
-import demo.employee.dto.EmployeeUpdateRequest
-import demo.employee.entity.Employee
-import demo.employee.service.EmployeeService
+import domain.common.PageRequest
+import domain.common.PageResponse
+import domain.auth.entity.User
+import domain.employee.dto.EmployeeInsertRequest
+import domain.employee.dto.EmployeeUpdateRequest
+import domain.employee.entity.Employee
+import domain.employee.service.EmployeeService
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -20,15 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import demo.common.CommonApiResponse
-import demo.annotation.Authorization
-import demo.annotation.LoginUser
-import demo.common.validator.EmployeeUpdateValidator
+import domain.annotation.Authorization
+import domain.annotation.LoginUser
+import domain.common.validator.EmployeeUpdateValidator
 import java.time.LocalDate
 
 @RestController
 @RequestMapping("/employee")
 class EmployeeController(
-    private val employeeService: EmployeeService,
+    private val employeeService: domain.employee.service.EmployeeService,
     private val updateValidator: EmployeeUpdateValidator
 ) {
 
@@ -76,7 +76,7 @@ class EmployeeController(
     }
 
     @PostMapping
-    @Authorization("MANAGER")
+    @domain.annotation.Authorization("MANAGER")
     fun insertEmployee(
         @LoginUser user: User,
         @Validated @RequestBody insertRequest: EmployeeInsertRequest

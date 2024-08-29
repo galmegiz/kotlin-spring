@@ -1,10 +1,10 @@
 package demo.common.interceptor
 
-import demo.common.ErrorCode
-import demo.annotation.Authorization
-import demo.auth.entity.User
-import demo.auth.service.AuthorizationService
-import demo.common.exception.SecurityException
+import domain.common.ErrorCode
+import domain.annotation.Authorization
+import domain.auth.entity.User
+import domain.auth.service.AuthorizationService
+import domain.common.exception.SecurityException
 import demo.common.interceptor.TokenVerifyInterceptor.Companion.USER_KEY
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -13,13 +13,13 @@ import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 
 @Component
-class AuthorizationInterceptor(val authorizationService: AuthorizationService) : HandlerInterceptor {
+class AuthorizationInterceptor(val authorizationService: domain.auth.service.AuthorizationService) : HandlerInterceptor {
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val handlerMethod: HandlerMethod = handler as? HandlerMethod ?: return true
-        if(!handlerMethod.hasMethodAnnotation(Authorization::class.java)) return true
+        if(!handlerMethod.hasMethodAnnotation(domain.annotation.Authorization::class.java)) return true
         try {
-            val authAnnotation = handlerMethod.method.getAnnotation(Authorization::class.java)
+            val authAnnotation = handlerMethod.method.getAnnotation(domain.annotation.Authorization::class.java)
             val user: User = request.getAttribute(USER_KEY) as? User ?: return false
             check(authorizationService.authorize(user, authAnnotation.requiredRole))
         } catch (e: Exception) {

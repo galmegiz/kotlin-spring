@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 val jwtVersion by extra { "0.11.5" }
 
@@ -6,12 +7,14 @@ val jwtVersion by extra { "0.11.5" }
 plugins {
 	id("org.springframework.boot") version "3.3.2"
 	id("io.spring.dependency-management") version "1.1.6"
+	id("java-library")
+
 	kotlin("jvm") version "2.0.10"
 	kotlin("plugin.spring") version "2.0.10"
 }
 
 group = "com.example"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.2-SNAPSHOT"
 
 apply(plugin = "io.spring.dependency-management")
 the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
@@ -72,3 +75,10 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+
+val jar: Jar by tasks
+val bootJar: BootJar by tasks
+
+bootJar.enabled = false
+jar.enabled = true

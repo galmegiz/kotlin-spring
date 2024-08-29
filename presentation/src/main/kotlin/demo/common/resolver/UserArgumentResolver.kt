@@ -1,10 +1,10 @@
 package demo.common.resolver
 
 import demo.common.interceptor.TokenVerifyInterceptor
-import demo.common.ErrorCode
-import demo.annotation.LoginUser
-import demo.auth.entity.User
-import demo.common.exception.SecurityException
+import domain.common.ErrorCode
+import domain.annotation.LoginUser
+import domain.auth.entity.User
+import domain.common.exception.SecurityException
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component

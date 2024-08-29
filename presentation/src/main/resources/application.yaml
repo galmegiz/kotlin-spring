@@ -1,3 +1,5 @@
+server:
+  port: 1123
 spring:
   application.name: demo
   datasource:
@@ -37,9 +39,9 @@ resilience4j:
         maxAttempts: 3              #The maximum number of retry attempts
         waitDuration: 1s            #A fixed wait duration between retry attempts
         retryExceptions:            #Configures a list of error classes that are recorded as a failure and thus are retried
-          - demo.common.exception.ExternalApiException
+          - domain.common.exception.ExternalApiException
         ignoreExceptions:           #Configures a list of error classes that are ignored and thus are not retried.
-          - demo.common.exception.ResourceNotFoundException
+          - domain.common.exception.ResourceNotFoundException
     instances:
       defaultConfig:
         base-config: default
@@ -67,7 +69,7 @@ resilience4j:
         eventConsumerBufferSize: 10                              # actuator를 위한 이벤트 버퍼 사이즈
 
         recordExceptions:
-          - demo.common.exception.ExternalApiException
+          - domain.common.exception.ExternalApiException
         ignoreExceptions:                                        # fallback은 실행된다
           - java.lang.IllegalStateException
 
