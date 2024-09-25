@@ -1,6 +1,6 @@
 package domain.common.config
 
-import domain.common.Log
+import domain.common.DomainLog
 import io.github.resilience4j.circuitbreaker.CircuitBreaker
 import io.github.resilience4j.core.registry.EntryAddedEvent
 import io.github.resilience4j.core.registry.EntryRemovedEvent
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class ResilienceConfig : Log {
+class ResilienceConfig : DomainLog {
     @Bean
     fun retryEventConsumer(): RegistryEventConsumer<Retry> {
         return object : RegistryEventConsumer<Retry> {

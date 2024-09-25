@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock
 
 @Service
 class AuthorizationService(
-    private val mybatisRoleHierarchyRepository: RoleHierarchyRepository
+    private val roleHierarchyRepository: RoleHierarchyRepository
 ) {
     private val lock = ReentrantReadWriteLock()
     private val readLock = lock.readLock()
@@ -19,7 +19,7 @@ class AuthorizationService(
 
     @PostConstruct
     fun init() {
-        val allHierarchy: List<RoleHierarchy> = mybatisRoleHierarchyRepository.findALl()
+        val allHierarchy: List<RoleHierarchy> = roleHierarchyRepository.findALl()
         allHierarchy.associateByTo(roleContainer) { it.roleName }
     }
 
@@ -39,7 +39,7 @@ class AuthorizationService(
         try{
             var parentRole: RoleHierarchy? = roleContainer[parentRoleName] ?: throw IllegalArgumentException("$parentRoleName does not exist in roleHierarchy")
             val newRole = RoleHierarchy(roleName = newRoleName, parentRoleId = parentRole!!.parentRoleId)
-            mybatisRoleHierarchyRepository.save(newRole)
+            roleHierarchyRepository.save(newRole)
 
             // newRole 저장
             if (childRoleName != null && roleContainer.containsKey(childRoleName)) {

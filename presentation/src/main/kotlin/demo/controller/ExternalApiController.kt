@@ -1,4 +1,4 @@
-package com.example.controller
+package demo.controller
 
 import domain.common.external.ExternalCBApieService
 import domain.common.external.ExternalRetryApiService

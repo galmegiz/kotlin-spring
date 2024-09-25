@@ -6,7 +6,7 @@ import domain.auth.dto.Token
 import domain.auth.entity.User
 import domain.auth.repository.RefreshTokenRepository
 import domain.auth.repository.UserRepository
-import domain.common.Log
+import domain.common.DomainLog
 import domain.common.util.TokenUtil
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -20,7 +20,7 @@ class AuthenticationService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val tokenUtil : TokenUtil
-) : Log {
+) : DomainLog {
 
     fun generateToken(user: User): Token {
         requireNotNull(user.id)

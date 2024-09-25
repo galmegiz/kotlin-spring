@@ -1,6 +1,6 @@
 package demo.common.interceptor
 
-import demo.common.Log
+import demo.common.PresentationLog
 import domain.common.ErrorCode
 import domain.auth.service.UserService
 import domain.common.util.TokenUtil
@@ -19,7 +19,7 @@ import domain.common.exception.SecurityException
 class TokenVerifyInterceptor(
     private val tokenUtil: TokenUtil,
     private val userService: UserService
-) : HandlerInterceptor, Log {
+) : HandlerInterceptor, PresentationLog {
     companion object {
         const val USER_KEY = "userProfile"
     }

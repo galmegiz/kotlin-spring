@@ -1,4 +1,4 @@
-package com.example.controller
+package demo.controller
 
 import domain.common.PageRequest
 import domain.common.PageResponse
@@ -23,29 +23,31 @@ import demo.common.CommonApiResponse
 import domain.annotation.Authorization
 import domain.annotation.LoginUser
 import domain.common.validator.EmployeeUpdateValidator
+import jakarta.annotation.PostConstruct
 import java.time.LocalDate
 
 @RestController
 @RequestMapping("/employee")
 class EmployeeController(
-    private val employeeService: domain.employee.service.EmployeeService,
+    private val employeeService: EmployeeService,
     private val updateValidator: EmployeeUpdateValidator
 ) {
 
     @InitBinder("employeeUpdateRequest")
-    fun init(webDataBinder: WebDataBinder){
+    fun init(webDataBinder: WebDataBinder) {
         webDataBinder.addValidators(updateValidator)
     }
 
     @GetMapping("/test")
-    fun hello(): String{
+    fun hello(): String {
         return "hello"
     }
 
     @GetMapping("/{empNo}")
     fun getEmployee(
         @LoginUser user: User,
-        @PathVariable empNo: Int): CommonApiResponse<Employee> {
+        @PathVariable empNo: Int
+    ): CommonApiResponse<Employee> {
         val employee = employeeService.findEmployeeByEmpNo(empNo)
         return CommonApiResponse(
             success = true,
@@ -55,7 +57,8 @@ class EmployeeController(
 
     @GetMapping("/name/{firstName}")
     fun getEmployee(
-        @PathVariable firstName: String): CommonApiResponse<Employee> {
+        @PathVariable firstName: String
+    ): CommonApiResponse<Employee> {
         val employee = employeeService.findEmployeeByName(firstName)
         return CommonApiResponse(
             success = true,
@@ -103,6 +106,6 @@ class EmployeeController(
     @DeleteMapping("/{empNo}")
     fun deleteEmployee(
         @LoginUser user: User,
-        @PathVariable empNo: Int): CommonApiResponse<Unit>
-        = CommonApiResponse(success = employeeService.deleteEmployee(empNo))
+        @PathVariable empNo: Int
+    ): CommonApiResponse<Unit> = CommonApiResponse(success = employeeService.deleteEmployee(empNo))
 }

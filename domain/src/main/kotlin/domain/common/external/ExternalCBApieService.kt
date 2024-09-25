@@ -1,6 +1,6 @@
 package domain.common.external
 
-import domain.common.Log
+import domain.common.DomainLog
 import domain.common.exception.ExternalApiException
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class ExternalCBApieService(
     private val externalClient: ExternalClient
-) : Log {
+) : DomainLog {
     companion object {
         const val DEFAULT_CB_CONFIG = "simpleCircuitBreakerConfig"
     }

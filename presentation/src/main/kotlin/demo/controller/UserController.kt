@@ -1,4 +1,4 @@
-package com.example.controller
+package demo.controller
 
 import domain.auth.dto.UserLoginRequest
 import domain.auth.dto.UserLoginResponse

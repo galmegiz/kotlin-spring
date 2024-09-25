@@ -1,6 +1,6 @@
 package demo.common.filter
 
-import demo.common.Log
+import demo.common.PresentationLog
 import jakarta.servlet.Filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
@@ -12,7 +12,7 @@ import kotlin.time.measureTime
 
 @Component
 @Order(1)
-class ResponseTimeLoggingFilter : Filter, Log {
+class ResponseTimeLoggingFilter : Filter, PresentationLog {
 
     companion object {
         private const val LONG_RESPONSE_TIME = 1000L

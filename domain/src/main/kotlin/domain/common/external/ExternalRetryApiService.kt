@@ -1,6 +1,6 @@
 package domain.common.external
 
-import domain.common.Log
+import domain.common.DomainLog
 import domain.common.exception.ExternalApiException
 import io.github.resilience4j.retry.annotation.Retry
 import org.springframework.stereotype.Service
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class ExternalRetryApiService(
     private val externalClients: ExternalClient
-) : Log {
+) : DomainLog {
     companion object {
         const val DEFAULT_RETRY_CONFIG = "defaultConfig"
         const val ADVANCED_RETRY_CONFIG = "advancedConfig"

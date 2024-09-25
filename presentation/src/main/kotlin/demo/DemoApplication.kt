@@ -5,13 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
-/*
-@ConfigurationPropertiesScan(basePackages = ["demo"])
-@SpringBootApplication(scanBasePackages = ["demo"])
-*/
-@ConfigurationPropertiesScan(basePackages = ["domain"])
-@SpringBootApplication(scanBasePackages = ["domain"])
-@MapperScan(basePackages = ["domain"])
+@ConfigurationPropertiesScan(basePackages = ["demo", "domain"])
+@SpringBootApplication(scanBasePackages = ["demo", "domain"])
+@MapperScan(basePackages = ["domain.auth.repository.mapper", "domain.employee.repository.mapper"])
 class DemoApplication
 
 fun main(args: Array<String>) {

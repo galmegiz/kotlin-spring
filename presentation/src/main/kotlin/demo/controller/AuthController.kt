@@ -1,4 +1,4 @@
-package com.example.controller
+package demo.controller
 
 import domain.common.ErrorCode
 import domain.auth.dto.RefreshToken

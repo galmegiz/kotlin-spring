@@ -4,12 +4,11 @@ import domain.common.ErrorCode
 import domain.common.Page
 import domain.common.PageRequest
 import domain.common.PageResponse
-import domain.common.Log
+import domain.common.DomainLog
 import domain.common.exception.ResourceNotFoundException
 import domain.employee.dto.EmployeeInsertRequest
 import domain.employee.dto.EmployeeUpdateRequest
 import domain.employee.entity.Employee
-import domain.employee.repository.EmployeesRepository
 import domain.employee.repository.MybatisEmployeeRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,7 +18,7 @@ import java.time.LocalDate
 @Transactional
 class EmployeeService(
     private val employeeRepository: MybatisEmployeeRepository
-) : Log {
+) : DomainLog {
 
     fun insertEmployee(insertRequest: EmployeeInsertRequest): Employee {
         val newEmployee = Employee(

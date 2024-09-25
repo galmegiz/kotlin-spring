@@ -1,7 +1,7 @@
 package domain.common.util
 
 import domain.auth.dto.Token
-import domain.common.Log
+import domain.common.DomainLog
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
@@ -23,7 +23,7 @@ class JwtUtil(
     val accessTokenExpireTime: Long,
     @Value("\${jwt.refresh-token-expire-time}")
     val refreshTokenExpireTime: Long
-) : Log {
+) : DomainLog {
     companion object{
         private const val GRANT_TYPE = "Bearer"
     }

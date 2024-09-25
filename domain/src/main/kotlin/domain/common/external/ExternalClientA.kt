@@ -1,14 +1,14 @@
 package domain.common.external
 
 import domain.common.ErrorCode
-import domain.common.Log
+import domain.common.DomainLog
 import domain.common.exception.ExternalApiException
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
 
 @Component
 @Primary
-class ExternalClientA : ExternalClient, Log {
+class ExternalClientA : ExternalClient, DomainLog {
     companion object {
         private const val URL = "www.google.com"
     }

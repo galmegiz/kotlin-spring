@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.resource.NoResourceFoundException
 import demo.common.CommonApiResponse
-import demo.common.Log
+import demo.common.PresentationLog
 import java.lang.StringBuilder
 
 @RestControllerAdvice
-class ExceptionHandlerAdvice : Log {
+class ExceptionHandlerAdvice : PresentationLog {
 
     @ExceptionHandler(Exception::class)
     fun unExpectedExceptionHandler(e: Exception, httpRequest: HttpServletRequest): ResponseEntity<CommonApiResponse<Any?>>{
